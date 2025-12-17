@@ -224,7 +224,7 @@ const PaymentWithInstallment = () => {
         </div>
 
         {/* Debug Info */}
-        <div className="card p-4 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800">
+        {/* <div className="card p-4 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800">
           <details>
             <summary className="cursor-pointer text-sm font-medium text-blue-700 dark:text-blue-300">
               Debug Info (Click to expand)
@@ -237,7 +237,7 @@ const PaymentWithInstallment = () => {
               <p><strong>Transaction ID:</strong> {transactionId || 'Not entered'}</p>
             </div>
           </details>
-        </div>
+        </div> */}
 
         <div className="grid lg:grid-cols-2 gap-8">
           {/* Left Column - Payment Options */}

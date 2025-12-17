@@ -128,7 +128,7 @@ const Payment = () => {
         </div>
 
         {/* Debug Info */}
-        <div className="card p-4 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800">
+        {/* <div className="card p-4 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800">
           <div className="flex items-center justify-between">
             <div className="text-sm text-blue-700 dark:text-blue-300">
               <strong>Service ID:</strong> {serviceId}
@@ -137,7 +137,7 @@ const Payment = () => {
               <strong>Amount:</strong> ₹{service.price}
             </div>
           </div>
-        </div>
+        </div> */}
 
         <div className="grid lg:grid-cols-2 gap-8">
           {/* Left Column - Payment Details */}
