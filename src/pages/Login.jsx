@@ -142,7 +142,7 @@ const Login = () => {
               {loading ? 'Logging in...' : 'Login to Account'}
             </button>
 
-            <div className="relative my-6">
+            {/* <div className="relative my-6">
               <div className="absolute inset-0 flex items-center">
                 <div className="w-full border-t border-gray-300 dark:border-gray-600"></div>
               </div>
@@ -151,9 +151,9 @@ const Login = () => {
                   Or continue with
                 </span>
               </div>
-            </div>
+            </div> */}
 
-            <button
+            {/* <button
               type="button"
               onClick={handleGoogleLogin}
               className="w-full flex items-center justify-center px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
@@ -162,7 +162,7 @@ const Login = () => {
               <span className="text-gray-700 dark:text-gray-300 font-medium">
                 Sign in with Google
               </span>
-            </button>
+            </button> */}
           </form>
 
           <p className="text-center mt-8 text-gray-600 dark:text-gray-300">

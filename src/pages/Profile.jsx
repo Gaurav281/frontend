@@ -33,11 +33,11 @@ const Profile = () => {
   const fetchProfileData = async () => {
     try {
       setLoading(true);
-      
+
       const { data } = await api.get('/user/profile');
-      
+
       if (data.success && data.user) {
-        
+
         setProfileUser(data.user);
         setFormData({
           name: data.user.name || '',
@@ -148,7 +148,7 @@ const Profile = () => {
       if (result.success) {
         toast.success('Profile updated successfully');
         setEditMode(false);
-        
+
         // Refresh all data
         await Promise.all([
           fetchProfileData(),
@@ -157,9 +157,9 @@ const Profile = () => {
       }
     } catch (error) {
       console.error('Update profile error:', error);
-      const errorMessage = error.response?.data?.message || 
-                          error.response?.data?.errors?.[0]?.msg || 
-                          'Failed to update profile';
+      const errorMessage = error.response?.data?.message ||
+        error.response?.data?.errors?.[0]?.msg ||
+        'Failed to update profile';
       toast.error(errorMessage);
     } finally {
       setLoading(false);
@@ -454,16 +454,14 @@ const Profile = () => {
                     </p>
                   </div>
 
-                  {editMode && (
-                    <button
-                      type="button"
-                      onClick={() => setShowChangePassword(true)}
-                      className="w-full btn-secondary flex items-center justify-center"
-                    >
-                      <FiKey className="mr-2" />
-                      Change Password
-                    </button>
-                  )}
+                  <button
+                    type="button"
+                    onClick={() => setShowChangePassword(true)}
+                    className="w-full btn-secondary flex items-center justify-center"
+                  >
+                    <FiKey className="mr-2" />
+                    Change Password
+                  </button>
                 </div>
 
                 {/* Right Column - Social Media */}
@@ -558,7 +556,7 @@ const Profile = () => {
                       setEditMode(false);
                       // Reset to original user data
                       if (displayUser) {
-                        const originalSocialMedia = Array.isArray(displayUser.socialMedia) 
+                        const originalSocialMedia = Array.isArray(displayUser.socialMedia)
                           ? displayUser.socialMedia.filter(sm => sm && sm.url && sm.url.trim() !== '')
                           : [];
                         setSocialMedia(originalSocialMedia);
@@ -594,8 +592,7 @@ const Profile = () => {
             <div className="p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
               <div className="flex items-center justify-between mb-2">
                 <span className="text-gray-600 dark:text-gray-300">Verification</span>
-                <span className={`px-2 py-1 rounded text-xs ${
-                  displayUser.isVerified !== false
+                <span className={`px-2 py-1 rounded text-xs ${displayUser.isVerified !== false
                     ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300'
                     : 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300'
                   }`}>
@@ -612,8 +609,7 @@ const Profile = () => {
             <div className="p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
               <div className="flex items-center justify-between mb-2">
                 <span className="text-gray-600 dark:text-gray-300">Account Status</span>
-                <span className={`px-2 py-1 rounded text-xs ${
-                  displayUser.isActive !== false && displayUser.isVerified !== false
+                <span className={`px-2 py-1 rounded text-xs ${displayUser.isActive !== false && displayUser.isVerified !== false
                     ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300'
                     : 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300'
                   }`}>
@@ -632,12 +628,11 @@ const Profile = () => {
             <div className="p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
               <div className="flex items-center justify-between mb-2">
                 <span className="text-gray-600 dark:text-gray-300">Suspicious Status</span>
-                <span className={`px-2 py-1 rounded text-xs ${
-                  displayUser.isSuspicious === true
+                <span className={`px-2 py-1 rounded text-xs ${displayUser.isSuspicious === true
                     ? 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300'
                     : 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300'
                   }`}>
-                  {displayUser.isSuspicious === true ? '⚠️ Suspicious' : '✅ Normal'}
+                  {displayUser.isSuspicious === true ? '⚠️ Suspicious' : 'Normal'}
                 </span>
               </div>
               <p className="text-sm text-gray-500 dark:text-gray-400">
@@ -655,8 +650,7 @@ const Profile = () => {
           <div className="p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
             <div className="flex items-center justify-between mb-2">
               <span className="text-gray-600 dark:text-gray-300">Installment Payments</span>
-              <span className={`px-2 py-1 rounded text-xs ${
-                displayUser.installmentSettings?.enabled === true
+              <span className={`px-2 py-1 rounded text-xs ${displayUser.installmentSettings?.enabled === true
                   ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300'
                   : 'bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-300'
                 }`}>

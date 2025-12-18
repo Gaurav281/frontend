@@ -119,7 +119,7 @@ const Contact = () => {
 
         <div className="grid lg:grid-cols-3 gap-8">
           {/* Contact Information */}
-          <div className="lg:col-span-1 space-y-8">
+          <div className="lg:col-span-1 space-y-8 order-2 lg:order-1">
             {/* Contact Cards */}
             <div className="grid sm:grid-cols-2 lg:grid-cols-1 gap-6">
               {contactInfo.map((info, index) => (
@@ -185,7 +185,7 @@ const Contact = () => {
           </div>
 
           {/* Contact Form */}
-          <div className="lg:col-span-2">
+          <div className="lg:col-span-2 order-1 lg:order-2">
             <div className="card p-8">
               <h2 className="text-2xl font-bold mb-2">Send us a Message</h2>
               <p className="text-gray-600 dark:text-gray-300 mb-8">
@@ -307,8 +307,8 @@ const Contact = () => {
               <div className="h-64 bg-gradient-to-r from-blue-100 to-purple-100 dark:from-gray-700 dark:to-gray-800 flex items-center justify-center">
                 <div className="text-center">
                   <FiMapPin className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-                  <p className="text-gray-600 dark:text-gray-300">Map Integration Available</p>
-                  <p className="text-sm text-gray-500 dark:text-gray-400">Replace with your map API</p>
+                  <p className="text-gray-600 dark:text-gray-300">Map Integration</p>
+                  <p className="text-sm text-gray-500 dark:text-gray-400"></p>
                 </div>
               </div>
             </div>

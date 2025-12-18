@@ -49,7 +49,7 @@ const Navbar = () => {
               <img
                 src="/logo.svg"
                 alt="5StarClip Logo"
-                className="w-12 h-35 group-hover:animate-spin"
+                className="w-12 h-35"
               />
             </div>
             <div className="flex flex-col leading-tight">

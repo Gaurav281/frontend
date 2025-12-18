@@ -26,40 +26,93 @@ import ResetPassword from './pages/ResetPassword'
 import PaymentWithInstallment from './pages/PaymentWithInstallment'
 
 function App() {
-  const [loading, setLoading] = useState(true)
+  const [initialLoading, setInitialLoading] = useState(true)
+  const [backendOnline, setBackendOnline] = useState(false)
   const [broadcastMessage, setBroadcastMessage] = useState('')
 
+  // 🔹 Initial backend check
   useEffect(() => {
-    fetchBroadcastMessage()
+    let fallbackTimer
+
+    const init = async () => {
+      try {
+        await api.get('/health')
+        setBackendOnline(true)
+
+        const { data } = await api.get('/broadcast/active')
+        if (data?.message) {
+          setBroadcastMessage(data.message)
+        }
+
+        // ✅ Backend online → stop loader immediately
+        setInitialLoading(false)
+        return
+      } catch {
+        // Backend offline → show loader max 2s
+        setBackendOnline(false)
+      }
+
+      // ⏱️ Backend offline → force exit loader after 2s
+      fallbackTimer = setTimeout(() => {
+        setInitialLoading(false)
+      }, 2000)
+    }
+
+    init()
+
+    return () => clearTimeout(fallbackTimer)
   }, [])
 
-  const fetchBroadcastMessage = async () => {
-    try {
-      const { data } = await api.get('/broadcast/active')
-      if (data.message) {
-        setBroadcastMessage(data.message)
+  // 🔁 Retry backend every 45s if offline
+  useEffect(() => {
+    if (backendOnline) return
+
+    const interval = setInterval(async () => {
+      try {
+        await api.get('/health')
+        setBackendOnline(true)
+
+        const { data } = await api.get('/broadcast/active')
+        if (data?.message) {
+          setBroadcastMessage(data.message)
+        }
+        setBackendOnline(true)
+      } catch {
+        // still offline → retry silently
       }
-      setLoading(false)
-    } catch (error) {
-      console.error('Failed to fetch broadcast message')
-    }
-  }
+    }, 45 * 1000)
+
+    return () => clearInterval(interval)
+  }, [backendOnline])
 
 
-  if (loading) {
+  /* ================= FULLSCREEN LOADER (ONLY 2s) ================= */
+  if (initialLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary-500"></div>
+      <div className="fixed inset-0 flex items-center justify-center bg-white text-black z-50">
+        <div className="text-center">
+          <div className="animate-spin h-10 w-10 border-4 border-black border-t-transparent rounded-full mx-auto mb-4"></div>
+          <p>Starting server… please wait</p>
+        </div>
       </div>
     )
   }
 
+
   return (
     <Router>
       <div className="min-h-screen flex flex-col">
+
+        {/* 🔴 TOP BACKEND LOADER (NON-BLOCKING) */}
+        {!backendOnline && (
+          <div className="bg-yellow-500 text-black text-sm py-2 text-center">
+            ⚠️ Server is starting… data will load automatically
+          </div>
+        )}
+
         <Navbar />
 
-        {broadcastMessage && (
+        {backendOnline && broadcastMessage && (
           <div className="gradient-bg text-white py-2 px-4 text-center">
             <p className="font-medium">📢 {broadcastMessage}</p>
           </div>
@@ -73,7 +126,7 @@ function App() {
             <Route path="/signup" element={<Signup />} />
             <Route path="/login" element={<Login />} />
             <Route path="/contact" element={<Contact />} />
-            
+
             {/* Profile Route */}
             <Route path="/profile" element={<ProtectedRoute />}>
               <Route path="/profile" element={<Profile />} />

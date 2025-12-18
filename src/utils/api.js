@@ -1,6 +1,9 @@
 import axios from 'axios';
 import toast from 'react-hot-toast';
 
+// ✅ GLOBAL FLAG (VERY IMPORTANT)
+let networkErrorShown = false;
+
 // Create axios instance with default config
 const api = axios.create({
   baseURL: import.meta.env.VITE_API_URL || 'http://localhost:5000/api',
@@ -28,19 +31,27 @@ api.interceptors.request.use(
 // Response interceptor for error handling
 api.interceptors.response.use(
   (response) => {
+    // ✅ Backend is reachable again → reset flag
+    networkErrorShown = false;
     return response;
   },
   (error) => {
     const { response } = error;
-    
+
     // Handle network errors
     if (!response) {
-      toast.error('Network error. Please check your connection.');
+      if (!networkErrorShown) {
+        networkErrorShown = true;
+        toast.error('Network error. Please check your connection.', {
+          id: 'network-error',   // 🔒 prevents duplicate red toast
+          duration: 2000         // ⏱ auto dismiss
+        });
+      }
       return Promise.reject(error);
     }
 
     const { status, data } = response;
-    
+
     // Handle specific error codes
     switch (status) {
       case 401:
@@ -53,27 +64,27 @@ api.interceptors.response.use(
           window.location.href = '/login';
         }
         break;
-        
+
       case 403:
         // Forbidden - insufficient permissions
         toast.error('Access denied. You do not have permission.');
         break;
-        
+
       case 404:
         // Not Found
         toast.error(data.message || 'Resource not found');
         break;
-        
+
       case 429:
         // Rate limit exceeded
         toast.error('Too many requests. Please try again later.');
         break;
-        
+
       case 500:
         // Server error
         toast.error('Server error. Please try again later.');
         break;
-        
+
       default:
         // Other errors
         if (data && data.message) {
@@ -82,7 +93,7 @@ api.interceptors.response.use(
           toast.error('An error occurred. Please try again.');
         }
     }
-    
+
     return Promise.reject(error);
   }
 );
@@ -104,7 +115,7 @@ export const servicesAPI = {
   getById: (id) => api.get(`/services/${id}`),
   getRelated: (id) => api.get(`/services/related/${id}`),
   getPopular: () => api.get('/services/popular'),
-  
+
   // Admin endpoints
   getAllAdmin: () => api.get('/services/admin/services'),
   create: (serviceData) => api.post('/services/admin/services', serviceData),
@@ -123,7 +134,7 @@ export const paymentsAPI = {
   getDetails: (id) => api.get(`/payments/${id}/details`),
   markComplete: (id) => api.patch(`/payments/${id}/complete`),
   getQR: (serviceId, amount) => api.get(`/payments/qr/${serviceId}${amount ? `?amount=${amount}` : ''}`),
-  
+
   // Admin endpoints
   updateStatus: (id, status, notes) => api.patch(`/admin/payments/${id}/status`, { status, notes }),
   sendNotification: (id, data) => api.post(`/admin/payments/${id}/notify`, data),
@@ -146,24 +157,24 @@ export const userAPI = {
 export const adminAPI = {
   // Dashboard
   getStats: () => api.get('/admin/stats'),
-  
+
   // User management
   getUsers: (params) => api.get('/admin/users', { params }),
   getUser: (id) => api.get(`/admin/users/${id}`),
   updateUserRole: (id, role) => api.patch(`/admin/users/${id}/role`, { role }),
   toggleUserStatus: (id) => api.patch(`/admin/users/${id}/status`),
   toggleSuspicionStatus: (id, isSuspicious) => api.patch(`/admin/users/${id}/suspicion`, { isSuspicious }),
-  
+
   // Installment management
   manageInstallments: (id, data) => api.patch(`/admin/users/${id}/installments`, data),
   setInstallmentSplits: (id, splits) => api.post(`/admin/users/${id}/installments/splits`, { splits }),
-  
+
   // Payment management
   getPayments: (params) => api.get('/admin/payments', { params }),
   getRecentPayments: () => api.get('/admin/payments/recent'),
   sendPaymentNotification: (id) => api.post(`/admin/payments/${id}/notify`),
   checkOverduePayments: () => api.get('/admin/check-overdue-payments'),
-  
+
   // Delete operations
   deleteUser: (id) => api.delete(`/admin/users/${id}`),
   deletePayment: (id) => api.delete(`/admin/payments/${id}`),
