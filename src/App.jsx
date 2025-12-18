@@ -29,61 +29,71 @@ function App() {
   const [initialLoading, setInitialLoading] = useState(true)
   const [backendOnline, setBackendOnline] = useState(false)
   const [broadcastMessage, setBroadcastMessage] = useState('')
+  const RETRY_TIME = 35
+
+  const [retrySeconds, setRetrySeconds] = useState(RETRY_TIME)
+
 
   // 🔹 Initial backend check
   useEffect(() => {
-    let fallbackTimer
+    // 🔥 Always stop fullscreen loader after 2s
+    const uiTimer = setTimeout(() => {
+      setInitialLoading(false)
+    }, 2000)
 
-    const init = async () => {
-      try {
-        await api.get('/health')
+    // 🚀 Wake backend in background (NON-BLOCKING)
+    api.get('/health')
+      .then(() => {
         setBackendOnline(true)
-
-        const { data } = await api.get('/broadcast/active')
-        if (data?.message) {
-          setBroadcastMessage(data.message)
-        }
-
-        // ✅ Backend online → stop loader immediately
-        setInitialLoading(false)
-        return
-      } catch {
-        // Backend offline → show loader max 2s
+        return api.get('/broadcast/active')
+      })
+      .then(({ data }) => {
+        if (data?.message) setBroadcastMessage(data.message)
+      })
+      .catch(() => {
         setBackendOnline(false)
-      }
+      })
 
-      // ⏱️ Backend offline → force exit loader after 2s
-      fallbackTimer = setTimeout(() => {
-        setInitialLoading(false)
-      }, 2000)
-    }
-
-    init()
-
-    return () => clearTimeout(fallbackTimer)
+    return () => clearTimeout(uiTimer)
   }, [])
+
 
   // 🔁 Retry backend every 45s if offline
   useEffect(() => {
     if (backendOnline) return
 
-    const interval = setInterval(async () => {
+    // ⏳ Countdown timer (UI)
+    setRetrySeconds(RETRY_TIME)
+
+    const countdown = setInterval(() => {
+      setRetrySeconds(prev => {
+        if (prev <= 1) return RETRY_TIME
+        return prev - 1
+      })
+    }, 1000)
+
+    // 🔁 Backend retry
+    const retry = setInterval(async () => {
       try {
         await api.get('/health')
         setBackendOnline(true)
 
         const { data } = await api.get('/broadcast/active')
-        if (data?.message) {
-          setBroadcastMessage(data.message)
-        }
-        setBackendOnline(true)
-      } catch {
-        // still offline → retry silently
-      }
-    }, 45 * 1000)
+        if (data?.message) setBroadcastMessage(data.message)
 
-    return () => clearInterval(interval)
+        clearInterval(countdown)
+        clearInterval(retry)
+      } catch {
+        // still sleeping → wait next cycle
+      }
+    }, RETRY_TIME * 1000)
+
+    return () => {
+      clearInterval(countdown)
+      clearInterval(retry)
+    }
   }, [backendOnline])
+
 
 
   /* ================= FULLSCREEN LOADER (ONLY 2s) ================= */
@@ -106,7 +116,7 @@ function App() {
         {/* 🔴 TOP BACKEND LOADER (NON-BLOCKING) */}
         {!backendOnline && (
           <div className="bg-yellow-500 text-black text-sm py-2 text-center">
-            ⚠️ Server is starting… data will load automatically
+            ⚠️ Server is starting… retrying in <span className="font-bold">{retrySeconds}s</span>
           </div>
         )}
 
