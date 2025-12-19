@@ -86,12 +86,12 @@ const Contact = () => {
       href: 'https://t.me/FiveStarClips',
       color: 'hover:bg-blue-400'
     },
-    {
-      icon: <FaInstagram className="w-5 h-5" />,
-      name: 'Instagram',
-      href: 'https://www.instagram.com/5starclipp?igsh=ZTgzdHI3bjk5NXR6',
-      color: 'hover:bg-pink-600'
-    },
+    // {
+    //   icon: <FaInstagram className="w-5 h-5" />,
+    //   name: 'Instagram',
+    //   href: 'https://www.instagram.com/5starclipp?igsh=ZTgzdHI3bjk5NXR6',
+    //   color: 'hover:bg-pink-600'
+    // },
     // {
     //   icon: <FaLinkedin className="w-5 h-5" />,
     //   name: 'LinkedIn',

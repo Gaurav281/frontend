@@ -23,7 +23,7 @@ const Footer = () => {
   const socialLinks = [
     // { icon: <FiFacebook />, name: 'Facebook', link: 'https://www.facebook.com/5starclipp' },
     // { icon: <FiTwitter />, name: 'Twitter' , link: 'https://twitter.com/5starclipp' },
-    { icon: <FiInstagram />, name: 'Instagram' , link: 'https://www.instagram.com/5starclipp?igsh=ZTgzdHI3bjk5NXR6'},
+    // { icon: <FiInstagram />, name: 'Instagram' , link: 'https://www.instagram.com/5starclipp?igsh=ZTgzdHI3bjk5NXR6'},
     { icon: <FaTelegram />, name: 'Telegram' , link: 'https://t.me/FiveStarClips' }
     // { icon: <FiLinkedin />, name: 'LinkedIn', link: 'https://www.linkedin.com/company/5starclipp' }
   ]

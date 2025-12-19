@@ -492,7 +492,7 @@ const Profile = () => {
                       {socialMedia.map((link, index) => (
                         <div key={index} className="flex items-center space-x-4">
                           <div className="flex-1 flex items-center space-x-4">
-                            <div className="w-10">
+                            <div className="w-15">
                               {editMode ? (
                                 <select
                                   value={link.platform || 'facebook'}

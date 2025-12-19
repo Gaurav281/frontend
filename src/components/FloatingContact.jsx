@@ -54,12 +54,12 @@ const FloatingContact = () => {
       href: 'https://t.me/FiveStarClips',
       color: 'bg-blue-500 hover:bg-blue-600'
     },
-    {
-      icon: <FaInstagram className="w-5 h-5" />,
-      label: 'Instagram',
-      href: 'https://www.instagram.com/5starclipp?igsh=ZTgzdHI3bjk5NXR6',
-      color: 'bg-pink-500 hover:bg-pink-600'
-    }
+    // {
+    //   icon: <FaInstagram className="w-5 h-5" />,
+    //   label: 'Instagram',
+    //   href: 'https://www.instagram.com/5starclipp?igsh=ZTgzdHI3bjk5NXR6',
+    //   color: 'bg-pink-500 hover:bg-pink-600'
+    // }
   ]
 
   return (
