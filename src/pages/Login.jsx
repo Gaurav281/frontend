@@ -59,12 +59,6 @@ const Login = () => {
     }
   }
 
-
-  const handleForgotPassword = () => {
-    // Implement forgot password
-    toast.success('Forgot password feature coming soon!')
-  }
-
   return (
     <div className="min-h-[80vh] flex items-center justify-center px-4 py-12">
       <div className="w-full max-w-md">
@@ -126,7 +120,6 @@ const Login = () => {
                 </label>
                 <Link
                   to="/forgot-password"
-                  onClick={handleForgotPassword}
                   className="text-sm text-primary-600 dark:text-primary-400 hover:underline"
                 >
                   Forgot password?
