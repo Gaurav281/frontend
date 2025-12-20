@@ -3,11 +3,15 @@ import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
-import { FiMail, FiLock, FiUser,FiPlus, FiCheckCircle,  FiTrash2, FiEye, FiEyeOff } from 'react-icons/fi';
+import { FiMail, FiLock, FiUser, FiPlus, FiCheckCircle, FiTrash2, FiEye, FiEyeOff } from 'react-icons/fi';
+import { GoogleLogin } from '@react-oauth/google'
+import { GoogleOAuthProvider } from '@react-oauth/google'
+import toast from 'react-hot-toast'
+
 
 const Signup = () => {
   const navigate = useNavigate();
-  const { signup, sendOTP, verifyOTP } = useAuth();
+  const { signup, sendOTP, verifyOTP, googleAuth , isAuthenticated } = useAuth();
   const [socialMedia, setSocialMedia] = useState([{ platform: 'youtube', url: '' }]);
 
   const [step, setStep] = useState(1);
@@ -64,6 +68,19 @@ const Signup = () => {
     setLoading(false);
   };
 
+  const handleGoogleSignupSuccess = async (credentialResponse) => {
+    try {
+      const res = await googleAuth(credentialResponse.credential);
+
+      if (res.success) {
+        navigate('/dashboard', { replace: true });
+      }
+    } catch (error) {
+      toast.error('Google signup failed');
+    }
+  };
+
+
   const handleVerifyOtp = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -101,6 +118,29 @@ const Signup = () => {
             <h2 className="text-3xl font-bold gradient-text mb-2">Create Account</h2>
             <p className="text-gray-600 dark:text-gray-300">Join our premium digital services</p>
           </div>
+
+          <div className="mb-6 flex justify-center">
+            {!isAuthenticated && (<GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}>
+              <GoogleLogin
+                onSuccess={handleGoogleSignupSuccess}
+                onError={() => toast.error('Google Signup Failed')}
+                useOneTap={false}
+              />
+            </GoogleOAuthProvider>
+            )}
+          </div>
+
+          <div className="relative my-6">
+            <div className="absolute inset-0 flex items-center">
+              <div className="w-full border-t border-gray-300 dark:border-gray-600"></div>
+            </div>
+            <div className="relative flex justify-center text-sm">
+              <span className="px-2 bg-white dark:bg-gray-800 text-gray-500 dark:text-gray-400">
+                Or sign up with email
+              </span>
+            </div>
+          </div>
+
 
           {/* Progress Steps */}
           <div className="flex items-center justify-center mb-8">
@@ -176,7 +216,7 @@ const Signup = () => {
                     />
                     <button
                       type="button"
-                      onClick={() => setShowPassword(!showPassword)}  
+                      onClick={() => setShowPassword(!showPassword)}
                       className="absolute right-3 top-3 text-gray-400 hover:text-gray-600"
                     >
                       {showPassword ? <FiEyeOff /> : <FiEye />}

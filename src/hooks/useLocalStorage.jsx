@@ -1,3 +1,4 @@
+//frontend/src/hooks/useLocalStorage.jsx
 import { useState, useEffect } from 'react';
 
 function useLocalStorage(key, initialValue) {

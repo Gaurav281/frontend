@@ -1,19 +1,29 @@
 //frontend/src/components/AdminRoute.jsx
 import { Navigate, Outlet, useLocation } from 'react-router-dom'
 import { useAuth } from '../hooks/useAuth'
-import { useEffect, useRef } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import LoadingSpinner from './LoadingSpinner'
 import toast from 'react-hot-toast'
 
 const AdminRoute = () => {
   const { user, loading, isAuthenticated, isAdmin } = useAuth()
   const location = useLocation()
+  const [isChecking, setIsChecking] = useState(true)
 
   // Prevent duplicate toasts
   const hasShownToast = useRef(false)
 
+   useEffect(() => {
+    if (!loading) {
+      const timer = setTimeout(() => {
+        setIsChecking(false)
+      }, 100)
+      return () => clearTimeout(timer)
+    }
+  }, [loading])
+
   useEffect(() => {
-    if (loading) return
+    if (loading || isChecking) return
 
     if (!isAuthenticated && !hasShownToast.current) {
       toast.error('Please login to access admin panel')
@@ -24,9 +34,9 @@ const AdminRoute = () => {
       toast.error('Access denied. Admin privileges required')
       hasShownToast.current = true
     }
-  }, [loading, isAuthenticated, isAdmin])
+  }, [loading, isChecking ,isAuthenticated, isAdmin])
 
-  if (loading) {
+  if (loading || isChecking) {
     return <LoadingSpinner fullScreen />
   }
 

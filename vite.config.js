@@ -1,21 +1,30 @@
+//frontend/vite.config.js
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react()],
+
   server: process.env.NODE_ENV === 'development'
     ? {
-      port: 5173,
-      proxy: {
-        '/api': {
-          target: 'http://localhost:5000',
-          changeOrigin: true,
-          secure: false,
+        port: 5173,
+
+        // ✅ ADD THIS (VERY IMPORTANT FOR GOOGLE LOGIN)
+        headers: {
+          'Cross-Origin-Opener-Policy': 'same-origin-allow-popups',
+        },
+
+        proxy: {
+          '/api': {
+            target: 'http://localhost:5000',
+            changeOrigin: true,
+            secure: false,
+          }
         }
       }
-    }
     : undefined,
+
   build: {
     outDir: 'dist',
     sourcemap: process.env.NODE_ENV !== 'production',
@@ -29,6 +38,7 @@ export default defineConfig({
       }
     }
   },
+
   resolve: {
     alias: {
       '@': '/src',

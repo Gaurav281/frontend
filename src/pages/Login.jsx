@@ -3,13 +3,16 @@ import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { Link, useNavigate } from 'react-router-dom'
 import toast from 'react-hot-toast'
-import { FiMail, FiLock, FiArrowRight , FiEye, FiEyeOff} from 'react-icons/fi'
+import { FiMail, FiLock, FiArrowRight, FiEye, FiEyeOff } from 'react-icons/fi'
 import { FcGoogle } from 'react-icons/fc'
 import { useAuth } from '../hooks/useAuth'
+import { GoogleLogin } from '@react-oauth/google';
+import { GoogleOAuthProvider } from '@react-oauth/google'
+
 
 const Login = () => {
   const navigate = useNavigate()
-  const { login } = useAuth()
+  const { login, googleAuth, isAuthenticated } = useAuth()
   const [formData, setFormData] = useState({
     email: '',
     password: ''
@@ -44,10 +47,18 @@ const Login = () => {
     }
   }
 
-  const handleGoogleLogin = () => {
-    // Implement Google OAuth
-    toast.success('Google login coming soon!')
+  const handleGoogleSuccess = async (credentialResponse) => {
+    try {
+      const res = await googleAuth(credentialResponse.credential)
+
+      if (res.success) {
+        navigate('/dashboard')
+      }
+    } catch (err) {
+      toast.error('Google login failed')
+    }
   }
+
 
   const handleForgotPassword = () => {
     // Implement forgot password
@@ -71,6 +82,25 @@ const Login = () => {
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-6">
+            { !isAuthenticated && (<GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}>
+              <GoogleLogin
+                onSuccess={handleGoogleSuccess}
+                onError={() => toast.error('Google Login Failed')}
+                useOneTap={false}
+              >
+              </GoogleLogin>
+            </GoogleOAuthProvider>
+            )}
+            <div className="relative my-6">
+              <div className="absolute inset-0 flex items-center">
+                <div className="w-full border-t border-gray-300 dark:border-gray-600"></div>
+              </div>
+              <div className="relative flex justify-center text-sm">
+                <span className="px-2 bg-white dark:bg-gray-800 text-gray-500 dark:text-gray-400">
+                  Or continue with
+                </span>
+              </div>
+            </div>
             <div>
               <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                 Email Address
@@ -141,28 +171,6 @@ const Login = () => {
             >
               {loading ? 'Logging in...' : 'Login to Account'}
             </button>
-
-            {/* <div className="relative my-6">
-              <div className="absolute inset-0 flex items-center">
-                <div className="w-full border-t border-gray-300 dark:border-gray-600"></div>
-              </div>
-              <div className="relative flex justify-center text-sm">
-                <span className="px-2 bg-white dark:bg-gray-800 text-gray-500 dark:text-gray-400">
-                  Or continue with
-                </span>
-              </div>
-            </div> */}
-
-            {/* <button
-              type="button"
-              onClick={handleGoogleLogin}
-              className="w-full flex items-center justify-center px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
-            >
-              <FcGoogle className="w-5 h-5 mr-3" />
-              <span className="text-gray-700 dark:text-gray-300 font-medium">
-                Sign in with Google
-              </span>
-            </button> */}
           </form>
 
           <p className="text-center mt-8 text-gray-600 dark:text-gray-300">

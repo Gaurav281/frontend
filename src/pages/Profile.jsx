@@ -9,6 +9,7 @@ import {
   FiInstagram, FiLinkedin, FiYoutube, FiKey,
   FiRefreshCw, FiDatabase, FiAlertCircle
 } from 'react-icons/fi';
+import { Link } from 'react-router-dom';
 
 const Profile = () => {
   const { user: authUser, updateProfile, changePassword } = useAuth();
@@ -230,7 +231,10 @@ const Profile = () => {
   }
 
   // Use profileUser as primary source, fallback to authUser
-  const displayUser = profileUser || authUser;
+  const displayUser = authUser || profileUser;
+  const isLocalAuth = displayUser?.authProvider === 'local';
+  const isGoogleAuth = displayUser?.authProvider === 'google';
+
 
   if (!displayUser) {
     return (
@@ -319,13 +323,17 @@ const Profile = () => {
                     {displayUser.isActive ? 'ACTIVE' : 'INACTIVE'}
                   </span>
                 </div>
+                <p className="text-xs text-red-500">
+                  Provider: {displayUser?.authProvider || 'MISSING'}
+                </p>
+
               </div>
             </div>
           </div>
         </div>
 
         {/* Change Password Form */}
-        {showChangePassword ? (
+        {showChangePassword && isLocalAuth ? (
           <div className="card p-8">
             <div className="flex items-center justify-between mb-6">
               <h2 className="text-xl font-bold">Change Password</h2>
@@ -454,14 +462,35 @@ const Profile = () => {
                     </p>
                   </div>
 
-                  <button
-                    type="button"
-                    onClick={() => setShowChangePassword(true)}
-                    className="w-full btn-secondary flex items-center justify-center"
-                  >
-                    <FiKey className="mr-2" />
-                    Change Password
-                  </button>
+                  {isGoogleAuth && (
+                    <p className="text-sm text-blue-600 dark:text-blue-400 mt-2">
+                      🔐 You signed in using Google. Passwords are managed via Google.
+                    </p>
+                  )}
+
+
+                  {/* Password Actions */}
+                  {isLocalAuth && (
+                    <button
+                      type="button"
+                      onClick={() => setShowChangePassword(true)}
+                      className="w-full btn-secondary flex items-center justify-center"
+                    >
+                      <FiKey className="mr-2" />
+                      Change Password
+                    </button>
+                  )}
+
+                  {isGoogleAuth && (
+                    <Link
+                      to="/forgot-password"
+                      className="w-full btn-secondary flex items-center justify-center"
+                    >
+                      <FiRefreshCw className="mr-2" />
+                      Forgot Password
+                    </Link>
+                  )}
+
                 </div>
 
                 {/* Right Column - Social Media */}
@@ -593,8 +622,8 @@ const Profile = () => {
               <div className="flex items-center justify-between mb-2">
                 <span className="text-gray-600 dark:text-gray-300">Verification</span>
                 <span className={`px-2 py-1 rounded text-xs ${displayUser.isVerified !== false
-                    ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300'
-                    : 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300'
+                  ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300'
+                  : 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300'
                   }`}>
                   {displayUser.isVerified !== false ? 'Verified' : 'Not Verified'}
                 </span>
@@ -610,8 +639,8 @@ const Profile = () => {
               <div className="flex items-center justify-between mb-2">
                 <span className="text-gray-600 dark:text-gray-300">Account Status</span>
                 <span className={`px-2 py-1 rounded text-xs ${displayUser.isActive !== false && displayUser.isVerified !== false
-                    ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300'
-                    : 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300'
+                  ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300'
+                  : 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300'
                   }`}>
                   {displayUser.isActive !== false && displayUser.isVerified !== false ? 'Active' : 'Inactive'}
                 </span>
@@ -629,8 +658,8 @@ const Profile = () => {
               <div className="flex items-center justify-between mb-2">
                 <span className="text-gray-600 dark:text-gray-300">Suspicious Status</span>
                 <span className={`px-2 py-1 rounded text-xs ${displayUser.isSuspicious === true
-                    ? 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300'
-                    : 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300'
+                  ? 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300'
+                  : 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300'
                   }`}>
                   {displayUser.isSuspicious === true ? '⚠️ Suspicious' : 'Normal'}
                 </span>
@@ -651,8 +680,8 @@ const Profile = () => {
             <div className="flex items-center justify-between mb-2">
               <span className="text-gray-600 dark:text-gray-300">Installment Payments</span>
               <span className={`px-2 py-1 rounded text-xs ${displayUser.installmentSettings?.enabled === true
-                  ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300'
-                  : 'bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-300'
+                ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300'
+                : 'bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-300'
                 }`}>
                 {displayUser.installmentSettings?.enabled === true ? 'Enabled' : 'Disabled'}
               </span>

@@ -24,6 +24,9 @@ import Profile from './pages/Profile'
 import ForgotPassword from './pages/ForgotPassword'
 import ResetPassword from './pages/ResetPassword'
 import PaymentWithInstallment from './pages/PaymentWithInstallment'
+import PrivacyPolicy from './pages/PrivacyPolicy'
+import Terms from './pages/Terms'
+
 
 function App() {
   const [initialLoading, setInitialLoading] = useState(true)
@@ -136,6 +139,9 @@ function App() {
             <Route path="/signup" element={<Signup />} />
             <Route path="/login" element={<Login />} />
             <Route path="/contact" element={<Contact />} />
+            <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+            <Route path="/terms" element={<Terms />} />
+
 
             {/* Profile Route */}
             <Route path="/profile" element={<ProtectedRoute />}>

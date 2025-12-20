@@ -38,6 +38,7 @@ export const AuthProvider = ({ children }) => {
     // Ensure all fields have proper defaults
     return {
       ...userData,
+      authProvider: userData.authProvider,
       isVerified: userData.isVerified !== false,
       isActive: userData.isActive !== false,
       isSuspicious: userData.isSuspicious === true, // Strict comparison
@@ -122,13 +123,44 @@ export const AuthProvider = ({ children }) => {
       if (data.success && data.user) {
         const formattedUser = formatUserData(data.user);
         setUser(formattedUser);
-        
+
       }
     } catch (err) {
       console.error('Refresh user data failed:', err);
     }
   };
 
+  // Add this function to your AuthContext in useAuth.jsx
+  const googleAuth = async (credential) => {
+    try {
+      setLoading(true);
+      const { data } = await api.post('/auth/google', { credential });
+
+      if (data.success && data.user) {
+        localStorage.setItem('token', data.token);
+        setAuthToken(data.token);
+
+        // Format user data consistently
+        const formattedUser = formatUserData(data.user);
+        setUser(formattedUser);
+
+        setError(null);
+        toast.success('Google authentication successful!');
+        return { success: true, data };
+      } else {
+        setError(data.message || 'Google authentication failed');
+        toast.error(data.message || 'Google authentication failed');
+        return { success: false, error: data.message };
+      }
+    } catch (err) {
+      const errorMsg = err.response?.data?.message || 'Google authentication failed';
+      setError(errorMsg);
+      toast.error(errorMsg);
+      return { success: false, error: errorMsg };
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const login = async (email, password) => {
     try {
@@ -138,7 +170,7 @@ export const AuthProvider = ({ children }) => {
       if (data.success) {
         localStorage.setItem('token', data.token);
         setAuthToken(data.token);
-        setUser(data.user);
+        setUser(formatUserData(data.user));
         setError(null);
         toast.success('Login successful!');
         return { success: true, data };
@@ -306,6 +338,7 @@ export const AuthProvider = ({ children }) => {
     logout,
     updateProfile,
     changePassword,
+    googleAuth,
     resetPassword,
     forgotPassword,
     checkAuth,

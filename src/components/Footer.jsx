@@ -24,7 +24,7 @@ const Footer = () => {
     // { icon: <FiFacebook />, name: 'Facebook', link: 'https://www.facebook.com/5starclipp' },
     // { icon: <FiTwitter />, name: 'Twitter' , link: 'https://twitter.com/5starclipp' },
     // { icon: <FiInstagram />, name: 'Instagram' , link: 'https://www.instagram.com/5starclipp?igsh=ZTgzdHI3bjk5NXR6'},
-    { icon: <FaTelegram />, name: 'Telegram' , link: 'https://t.me/FiveStarClips' }
+    { icon: <FaTelegram />, name: 'Telegram', link: 'https://t.me/FiveStarClips' }
     // { icon: <FiLinkedin />, name: 'LinkedIn', link: 'https://www.linkedin.com/company/5starclipp' }
   ]
 
@@ -108,14 +108,31 @@ const Footer = () => {
           </div>
         </div>
 
-        <div className="border-t border-gray-700 pt-8 text-center">
+        <div className="border-t border-gray-700 pt-8 text-center space-y-3">
           <p className="text-gray-400">
-            © {currentYear} 5StartClip Production. All rights reserved.
+            © {currentYear} 5StarClip Production. All rights reserved.
           </p>
-          <p className="text-gray-500 text-sm mt-2">
+
+          <div className="flex justify-center space-x-6 text-sm">
+            <Link
+              to="/privacy-policy"
+              className="text-gray-400 hover:text-white transition"
+            >
+              Privacy Policy
+            </Link>
+            <Link
+              to="/terms"
+              className="text-gray-400 hover:text-white transition"
+            >
+              Terms & Conditions
+            </Link>
+          </div>
+
+          <p className="text-gray-500 text-sm">
             Premium Digital Solutions Provider
           </p>
         </div>
+
       </div>
     </footer>
   )
