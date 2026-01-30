@@ -42,7 +42,7 @@ function App() {
     // 🔥 Always stop fullscreen loader after 2s
     const uiTimer = setTimeout(() => {
       setInitialLoading(false)
-    }, 1100)
+    }, 200)
 
     // 🚀 Wake backend in background (NON-BLOCKING)
     api.get('/health')
