@@ -22,6 +22,7 @@ const Footer = () => {
 
   const socialLinks = [
     // { icon: <FiFacebook />, name: 'Facebook', link: 'https://www.facebook.com/5starclipp' },
+    { icon: <FaWhatsapp />, name: 'Whatsapp', link: 'https://wa.me/9499141536' },
     // { icon: <FiTwitter />, name: 'Twitter' , link: 'https://twitter.com/5starclipp' },
     // { icon: <FiInstagram />, name: 'Instagram' , link: 'https://www.instagram.com/5starclipp?igsh=ZTgzdHI3bjk5NXR6'},
     { icon: <FaTelegram />, name: 'Telegram', link: 'https://t.me/FiveStarClips' }
@@ -102,7 +103,7 @@ const Footer = () => {
               </li>
               <li className="flex items-start">
                 <FiMapPin className="mt-1 mr-3 text-gray-400" />
-                <span className="text-gray-400">No. 3,RMZ Infinity-Tower E, 3rd floor<br />Bengaluru, Karnatka</span>
+                <span className="text-gray-400">Office No. 302, 3rd Floor, Gopalkrupa, behind Surabhi Hotel, Revenue Colony, Shivajinagar, Pune, Maharashtra 411005</span>
               </li>
             </ul>
           </div>

@@ -42,12 +42,12 @@ const FloatingContact = () => {
   }
 
   const socialLinks = [
-    // {
-    //   icon: <FaWhatsapp className="w-5 h-5" />,
-    //   label: 'WhatsApp',
-    //   href: 'https://wa.me/1234567890',
-    //   color: 'bg-green-500 hover:bg-green-600'
-    // },
+    {
+      icon: <FaWhatsapp className="w-5 h-5" />,
+      label: 'WhatsApp',
+      href: 'https://wa.me/9499141536',
+      color: 'bg-green-500 hover:bg-green-600'
+    },
     {
       icon: <FaTelegram className="w-5 h-5" />,
       label: 'Telegram',

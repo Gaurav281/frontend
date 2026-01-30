@@ -62,7 +62,7 @@ const Contact = () => {
     {
       icon: <FiMapPin className="w-6 h-6" />,
       title: 'Visit Us',
-      details: ['No. 3,RMZ Infinity-Tower E, 3rd floor', 'Bengaluru', 'India'],
+      details: ['Office No. 302', '3rd Floor, Gopalkrupa', 'behind Surabhi Hotel, Revenue Colony, Shivajinagar, Pune, Maharashtra 411005'],
       color: 'bg-purple-500'
     },
     {
@@ -74,12 +74,12 @@ const Contact = () => {
   ]
 
   const socialLinks = [
-    // {
-    //   icon: <FaWhatsapp className="w-5 h-5" />,
-    //   name: 'WhatsApp',
-    //   href: 'https://wa.me/1234567890',
-    //   color: 'hover:bg-green-500'
-    // },
+    {
+      icon: <FaWhatsapp className="w-5 h-5" />,
+      name: 'WhatsApp',
+      href: 'https://wa.me/9499141536',
+      color: 'hover:bg-green-500'
+    },
     {
       icon: <FaTelegram className="w-5 h-5" />,
       name: 'Telegram',
