@@ -50,7 +50,7 @@ const Contact = () => {
     {
       icon: <FiMail className="w-6 h-6" />,
       title: 'Email Us',
-      details: ['5starclipp@gmail.com', '5starclipps@gmail.com'],
+      details: ['5starclip@gmail.com'],
       color: 'bg-blue-500'
     },
     {

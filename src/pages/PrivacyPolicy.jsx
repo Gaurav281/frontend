@@ -48,7 +48,7 @@ const PrivacyPolicy = () => {
 
       <h2 className="text-xl font-semibold mb-3">6. Contact Us</h2>
       <p className="text-gray-700">
-        Email: <strong>5starclipp@gmail.com</strong>
+        Email: <strong>5starclip@gmail.com</strong>
       </p>
     </div>
   )

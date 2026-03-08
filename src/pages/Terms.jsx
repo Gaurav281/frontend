@@ -47,7 +47,7 @@ const Terms = () => {
 
       <h2 className="text-xl font-semibold mb-3">7. Contact</h2>
       <p className="text-gray-700">
-        Email: <strong>5starclipp@gmail.com</strong>
+        Email: <strong>5starclip@gmail.com</strong>
       </p>
     </div>
   )
