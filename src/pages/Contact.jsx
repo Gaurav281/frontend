@@ -56,7 +56,7 @@ const Contact = () => {
     {
       icon: <FiPhone className="w-6 h-6" />,
       title: 'Call Us',
-      details: ['01304600263'],
+      details: ['7865567865'],
       color: 'bg-green-500'
     },
     {

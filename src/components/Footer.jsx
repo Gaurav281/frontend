@@ -100,7 +100,7 @@ const Footer = () => {
               </li>
               <li className="flex items-start">
                 <FiPhone className="mt-1 mr-3 text-gray-400" />
-                <span className="text-gray-400">01304600263</span>
+                <span className="text-gray-400">7865567865</span>
               </li>
               <li className="flex items-start">
                 <FiMapPin className="mt-1 mr-3 text-gray-400" />
